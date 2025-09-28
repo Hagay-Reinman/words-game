@@ -1,5 +1,5 @@
 // DEFAULT WORDS
-let allWords = ["בר", "בירה", "סיבה", "חלב", "מים", "לחם", "תפוח"];
+let allWords = ["דוד", "בירה", "סיבה"];
 let targetWords = [];
 let letters = [];
 
@@ -322,7 +322,7 @@ async function loadWordsFromDefaultFile() {
   restartGame();
 }
 
-loadWordsFromDefaultFile();
+// loadWordsFromDefaultFile();
 
 window.deleteLetter = deleteLetter;
 window.giveHint = giveHint;
