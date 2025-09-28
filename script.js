@@ -80,7 +80,8 @@ function renderLetters(){
 
 function getDisplayedWords() {
   const displayCount = parseInt(document.getElementById('displayWordCountInput').value) || 2;
-  return targetWords.slice(0, displayCount + foundWords.length);
+  const maxDisplay = Math.min(4, displayCount + foundWords.length);
+  return targetWords.slice(0, maxDisplay);
 }
 
 function updateLettersForDisplay() {
@@ -90,7 +91,9 @@ function updateLettersForDisplay() {
   // Only include letters from unsolved words that are currently displayed
   // This ensures common letters between solved and unsolved words are preserved
   const source = unsolvedWords.length > 0 ? unsolvedWords : [];
-  letters = [...new Set(source.join("").split(""))];
+  
+  // Preserve duplicate letters (e.g., "דוד" should show "ד" twice)
+  letters = source.join("").split("");
   shuffleArray(letters);
   renderLetters();
 }
