@@ -162,8 +162,8 @@ function giveHint(){
 }
 
 function restartGame(){ 
-  // Always pick 4 words to guess
-  targetWords = pickRandomWords(allWords, 4);
+  // Select ALL words from the list, not just 4
+  targetWords = [...allWords];
 
   currentGuess=""; foundWords=[]; revealedLetters = targetWords.map(w=>Array.from({length:w.length},()=>false)); 
 
