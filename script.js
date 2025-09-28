@@ -86,6 +86,9 @@ function getDisplayedWords() {
 function updateLettersForDisplay() {
   const displayedWords = getDisplayedWords();
   const unsolvedWords = displayedWords.filter(w => !foundWords.includes(w));
+  
+  // Only include letters from unsolved words that are currently displayed
+  // This ensures common letters between solved and unsolved words are preserved
   const source = unsolvedWords.length > 0 ? unsolvedWords : [];
   letters = [...new Set(source.join("").split(""))];
   shuffleArray(letters);
