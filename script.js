@@ -45,8 +45,7 @@ function pickRandomWords(words, maxCount = 4){
 // Render board
 function renderBoard(){
   const board=document.getElementById("board"); board.innerHTML="";
-  const displayCount = parseInt(document.getElementById("displayWordCountInput").value) || 2;
-  const wordsToDisplay = targetWords.slice(0, displayCount + foundWords.length);
+  const wordsToDisplay = getDisplayedWords();
 
   wordsToDisplay.forEach((word,wi)=>{
     let rowHTML="";
@@ -90,10 +89,15 @@ function updateLettersForDisplay() {
   
   // Only include letters from unsolved words that are currently displayed
   // This ensures common letters between solved and unsolved words are preserved
-  const source = unsolvedWords.length > 0 ? unsolvedWords : [];
+  if (unsolvedWords.length > 0) {
+    // Preserve duplicate letters (e.g., "דוד" should show "ד" twice)
+    letters = unsolvedWords.join("").split("");
+  } else {
+    // If all displayed words are solved, show letters from all displayed words
+    // This handles the case where we need to show letters for solved words
+    letters = displayedWords.join("").split("");
+  }
   
-  // Preserve duplicate letters (e.g., "דוד" should show "ד" twice)
-  letters = source.join("").split("");
   shuffleArray(letters);
   renderLetters();
 }
