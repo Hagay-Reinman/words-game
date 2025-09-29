@@ -322,7 +322,7 @@ async function loadWordsFromDefaultFile() {
   restartGame();
 }
 
-// loadWordsFromDefaultFile();
+loadWordsFromDefaultFile();
 
 window.deleteLetter = deleteLetter;
 window.giveHint = giveHint;
