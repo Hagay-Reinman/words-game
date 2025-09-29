@@ -1,5 +1,5 @@
 // DEFAULT WORDS
-let allWords = ["דוד", "בירה", "סיבה"];
+let allWords = ["בר", "בירה", "סיבה", "חלב", "מים", "לחם", "תפוח"];
 let targetWords = [];
 let letters = [];
 
@@ -14,16 +14,17 @@ let path = [], lastPointer=null;
 const canvas = document.getElementById("lineCanvas");
 const ctx = canvas.getContext("2d");
 
-// Set the canvas dimensions to match the circle
-canvas.width = 500;
-canvas.height = 500;
+// Size parameters (will be computed responsively)
+let circleSizePx = 500; // fallback
+let buttonSizePx = 60;  // fallback
+let circlePaddingPx = 30; // space from edge
 
 const circleEl = document.getElementById("circle");
 let eventsAttached = false;
 
-// Update the center and radius values for the new size
-const center = {x: 250, y: 250};
-const radius = 250 - 30; 
+// Center and radius (computed in computeGeometry)
+let center = {x: 250, y: 250};
+let radius = 250 - circlePaddingPx;
 
 const messageEl = document.getElementById("message");
 
@@ -61,16 +62,19 @@ function renderBoard(){
 // Render letters
 function renderLetters(){
   circleEl.innerHTML=""; positions.clear(); path=[]; lastPointer=null; clearCanvas();
-  const angleStep = (2*Math.PI)/letters.length;
+  const angleStep = (2*Math.PI)/Math.max(letters.length, 1);
   letters.forEach((letter,i)=>{
     const angle = i*angleStep - Math.PI/2;
-    const x = center.x + radius*Math.cos(angle)-30;
-    const y = center.y + radius*Math.sin(angle)-30;
+    const x = center.x + radius*Math.cos(angle) - buttonSizePx/2;
+    const y = center.y + radius*Math.sin(angle) - buttonSizePx/2;
     const btn = document.createElement("button");
     btn.innerText = letter;
     btn.style.left=`${x}px`; btn.style.top=`${y}px`;
+    btn.style.width = `${buttonSizePx}px`;
+    btn.style.height = `${buttonSizePx}px`;
+    btn.style.fontSize = `${Math.max(16, Math.round(buttonSizePx*0.4))}px`;
     btn.dataset.letter = letter;
-    positions.set(btn,{x:x+30,y:y+30});
+    positions.set(btn,{x:x+buttonSizePx/2,y:y+buttonSizePx/2});
     btn.addEventListener("click",()=>{ if(!dragging){ addLetter(letter,btn); checkWord(); }});
     circleEl.appendChild(btn);
   });
@@ -178,6 +182,7 @@ function restartGame(){
   currentGuess=""; foundWords=[]; revealedLetters = targetWords.map(w=>Array.from({length:w.length},()=>false)); 
 
   document.getElementById("guess").innerText=""; 
+  computeGeometry();
   renderBoard(); updateLettersForDisplay(); clearCanvas(); hideMessage(); 
 }
 
@@ -219,6 +224,20 @@ function drawPath(){
 }
 
 function clearCanvas(){ ctx.clearRect(0,0,canvas.width,canvas.height); }
+
+function computeGeometry(){
+  const wrap = circleEl.parentElement; // .circle-wrap
+  const rect = wrap.getBoundingClientRect();
+  circleSizePx = Math.round(rect.width);
+  buttonSizePx = Math.max(40, Math.round(circleSizePx * 0.12));
+  circlePaddingPx = Math.max(20, Math.round(circleSizePx * 0.06));
+
+  center = { x: circleSizePx/2, y: circleSizePx/2 };
+  radius = circleSizePx/2 - circlePaddingPx;
+
+  canvas.width = circleSizePx;
+  canvas.height = circleSizePx;
+}
 
 // NEW: Word list functions
 document.getElementById('wordFileInput').addEventListener('change', handleFileSelect, false);
@@ -322,8 +341,15 @@ async function loadWordsFromDefaultFile() {
   restartGame();
 }
 
-// loadWordsFromDefaultFile();
+loadWordsFromDefaultFile();
 
 window.deleteLetter = deleteLetter;
 window.giveHint = giveHint;
 window.restartGame = restartGame;
+
+// Recompute geometry and re-render on resize
+window.addEventListener('resize', () => {
+  computeGeometry();
+  renderLetters();
+  drawPath();
+});
