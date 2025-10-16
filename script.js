@@ -82,7 +82,7 @@ function renderLetters(){
 }
 
 function getDisplayedWords() {
-  const displayCount = parseInt(document.getElementById('displayWordCountInput').value) || 2;
+  const displayCount = parseInt(document.getElementById('displayWordCountInput').value) || 1;
   const maxDisplay = Math.min(4, displayCount + foundWords.length);
   return targetWords.slice(0, maxDisplay);
 }
@@ -241,6 +241,9 @@ function computeGeometry(){
 
 // NEW: Word list functions
 document.getElementById('wordFileInput').addEventListener('change', handleFileSelect, false);
+document.getElementById('fileInputButton').addEventListener('click', function() {
+  document.getElementById('wordFileInput').click();
+});
 document.getElementById('wordListSelector').addEventListener('change', handleListSelection);
 document.getElementById('displayWordCountInput').addEventListener('input', handleDisplayCountChange);
 document.getElementById('displayWordCountInput').addEventListener('change', handleDisplayCountChange);
@@ -285,7 +288,7 @@ function parseWordFile(content) {
 
 function populateDropdown(listNames) {
   const selector = document.getElementById('wordListSelector');
-  selector.innerHTML = '<option value="">-- Select a Word List --</option>';
+  selector.innerHTML = '<option value="">-- בחר רשימת מילים --</option>';
   listNames.forEach(name => {
     const option = document.createElement('option');
     option.value = name;
