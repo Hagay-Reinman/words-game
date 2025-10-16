@@ -16,7 +16,10 @@
     text-align: right;
    }
   #wordListInput { width: 260px; font-size:16px; }
-  .file-input-wrapper { position: relative; }
+  .file-input-wrapper { 
+    position: relative; 
+    display: grid;
+  }
   .file-input-button { 
     padding: 8px 16px; 
     background: #007bff; 
@@ -78,16 +81,16 @@
   <div id="wordInputContainer">
     <div style="display: flex;">
       <div class="file-input-wrapper" >
+        <button type="button" id="fileInputButton" class="file-input-button">בחר קובץ מילים</button>
+        <input type="file" id="wordFileInput" accept=".txt" style="display: none;">
         <select id="wordListSelector" disabled>
           <option value="">-- בחר רשימת מילים --</option>
         </select>
-        <input type="file" id="wordFileInput" accept=".txt" style="display: none;">
-        <button type="button" id="fileInputButton" class="file-input-button">בחר קובץ מילים</button>
       </div>
     </div>
-    <div style="display: flex; margin-left: 85px;">
-      <input type="number" id="displayWordCountInput" value="1" min="1" max="4" style="margin-right: 5px;">
-      <label for="displayWordCountInput">מספר מילים להציג:</label>
+    <div style="display: flex; margin-left: 25px; margin-top: 5px">
+      <input type="number" id="displayWordCountInput" value="1" min="1" max="4" style=" width: 30px; margin-right: 5px;">
+      <label for="displayWordCountInput">:מספר מילים </label>
     </div>
   </div>
 </div>
