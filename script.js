@@ -13,6 +13,7 @@ let path = [], lastPointer=null;
 
 const canvas = document.getElementById("lineCanvas");
 const ctx = canvas.getContext("2d");
+const displayWords = 4;
 
 // Size parameters (will be computed responsively)
 let circleSizePx = 500; // fallback
@@ -83,7 +84,7 @@ function renderLetters(){
 
 function getDisplayedWords() {
   const displayCount = parseInt(document.getElementById('displayWordCountInput').value) || 1;
-  const maxDisplay = Math.min(4, displayCount + foundWords.length);
+  const maxDisplay = Math.min(displayWords, displayCount + foundWords.length);
   return targetWords.slice(0, maxDisplay);
 }
 
@@ -99,7 +100,7 @@ function updateLettersForDisplay() {
   } else {
     // If all displayed words are solved, show letters from all displayed words
     // This handles the case where we need to show letters for solved words
-    letters = displayedWords.join("").split("");
+    // letters = displayedWords.join("").split("");
   }
   
   shuffleArray(letters);
@@ -152,12 +153,12 @@ function checkWord(){
 }
 
 // FIX: Corrected delete function
-function deleteLetter(){
-  if(currentGuess.length > 0){
-    currentGuess = currentGuess.slice(0, -1);
-    document.getElementById("guess").innerText = currentGuess;
-  }
-}
+// function deleteLetter(){
+//   if(currentGuess.length > 0){
+//     currentGuess = currentGuess.slice(0, -1);
+//     document.getElementById("guess").innerText = currentGuess;
+//   }
+// }
 
 function giveHint(){
   for(let wi=0;wi<targetWords.length;wi++){
@@ -176,8 +177,13 @@ function giveHint(){
 }
 
 function restartGame(){ 
-  // Select ALL words from the list, not just 4
   targetWords = [...allWords];
+
+  // Select ALL words from the list, not just 4
+  for (let i = targetWords.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1)); // random index
+    [targetWords[i], targetWords[j]] = [targetWords[j], targetWords[i]];   // swap
+  }
 
   currentGuess=""; foundWords=[]; revealedLetters = targetWords.map(w=>Array.from({length:w.length},()=>false)); 
 
@@ -188,9 +194,10 @@ function restartGame(){
 
 // Show/hide message
 function showMessageIfDone(){
-  if(foundWords.length===targetWords.length){
+  if(foundWords.length===displayWords){
+    // targetWords.length){
     messageEl.classList.add("show");
-    setTimeout(()=>{ messageEl.classList.remove("show"); },2000);
+    setTimeout(()=>{ messageEl.classList.remove("show"); },20000);
   } else {
     messageEl.classList.remove("show");
   }
@@ -288,7 +295,7 @@ function parseWordFile(content) {
 
 function populateDropdown(listNames) {
   const selector = document.getElementById('wordListSelector');
-  selector.innerHTML = '<option value="">-- בחר רשימת מילים --</option>';
+  selector.innerHTML = '<option value="">-- בחר רשימת --</option>';
   listNames.forEach(name => {
     const option = document.createElement('option');
     option.value = name;

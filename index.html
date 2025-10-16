@@ -39,13 +39,60 @@
   }
   .word-row { direction: rtl; text-align:center; }
   #guess { margin:8px auto 10px; font-size:24px; color:#333; min-height:30px; direction: rtl; unicode-bidi: isolate-override; text-align:center; }
-  .circle-wrap { position:relative; width:min(92vw, 500px); aspect-ratio:1/1; margin:0 auto; }
+  .circle-wrap { 
+    position: relative; 
+    width: min(92vw, 500px); 
+    aspect-ratio: 1/1; 
+    margin:0 auto; 
+  }
   #circle { position:absolute; top:0; left:0; width:100%; height:100%; border-radius:50%; background:#ddd; display:flex; justify-content:center; align-items:center; touch-action:none; }
   #circle button { position:absolute; border-radius:50%; border:none; background:gold; font-weight:bold; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.3); transition: transform 0.1s; z-index:2; }
   #circle button.active { background:orange; transform:scale(1.1); }
   #controls { margin-top:10px; }
   #controls button { margin:4px; padding:8px 14px; font-size:16px; cursor:pointer; }
   #lineCanvas { position:absolute; top:0; left:0; pointer-events:none; z-index:1; }
+  .orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150px; /* orbit radius × 2 */
+    height: 150px;
+    margin: -75px; /* center orbit path */
+    animation: orbit 4s linear infinite;
+    transform-origin: 75px 75px; /* orbit radius */
+  }
+
+  .spin {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  @keyframes orbit {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  /* .spinAndMove {
+    animation:
+      spin 1s linear infinite,
+      move 4s linear;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  @keyframes move {
+    0%   { left: 0;   top: 0; }
+    25%  { left: 150px; top: 0; }
+    50%  { left: 150px; top: 150px; }
+    75%  { left: 0;   top: 150px; }
+    100% { left: 0;   top: 0; }
+  } */
 
   @media (max-width: 480px) {
     #wordInputContainer { gap:6px; margin:8px 8px; }
@@ -96,15 +143,19 @@
 </div>
 
 <div id="guess"></div>
-<div id="message">כל הכבוד!</div>
+<div id="message" class="orbit">
+  <div class="spin">
+    ! כל הכבוד
+  </div>
+</div>
 
 <div class="circle-wrap">
-  <canvas id="lineCanvas" width="500" height="500"></canvas>
+  <canvas id="lineCanvas" width="300" height="300"></canvas>
   <div id="circle"></div>
 </div>
 
 <div id="controls">
-  <button onclick="deleteLetter()">מחק</button>
+  <!-- <button onclick="deleteLetter()">מחק</button> -->
   <button onclick="giveHint()">רמז (אות אחת)</button>
   <button onclick="restartGame()">התחל מחדש</button>
 </div>
