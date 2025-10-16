@@ -145,6 +145,7 @@ function checkWord(){
   if(idx!==-1 && !foundWords.includes(currentGuess)){
     foundWords.push(currentGuess);
     revealedLetters[idx] = revealedLetters[idx].map(()=>true);
+    
     renderBoard();
     updateLettersForDisplay();
   }
@@ -169,7 +170,8 @@ function giveHint(){
         if(revealedLetters[wi].every(Boolean) && !foundWords.includes(targetWords[wi])) foundWords.push(targetWords[wi]);
         renderBoard();
         updateLettersForDisplay();
-        break;
+        showMessageIfDone();
+        return;
       }
     }
   }
@@ -197,7 +199,7 @@ function showMessageIfDone(){
   if(foundWords.length===displayWords){
     // targetWords.length){
     messageEl.classList.add("show");
-    setTimeout(()=>{ messageEl.classList.remove("show"); },20000);
+    setTimeout(()=>{ messageEl.classList.remove("show"); },10000);
   } else {
     messageEl.classList.remove("show");
   }
