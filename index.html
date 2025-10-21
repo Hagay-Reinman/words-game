@@ -75,24 +75,6 @@
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
   }
-  /* .spinAndMove {
-    animation:
-      spin 1s linear infinite,
-      move 4s linear;
-  }
-
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-
-  @keyframes move {
-    0%   { left: 0;   top: 0; }
-    25%  { left: 150px; top: 0; }
-    50%  { left: 150px; top: 150px; }
-    75%  { left: 0;   top: 150px; }
-    100% { left: 0;   top: 0; }
-  } */
 
   @media (max-width: 480px) {
     #wordInputContainer { gap:6px; margin:8px 8px; }
@@ -130,7 +112,7 @@
       <div class="file-input-wrapper" >
         <button type="button" id="fileInputButton" class="file-input-button">בחר קובץ מילים</button>
         <input type="file" id="wordFileInput" accept=".txt" style="display: none;">
-        <select id="wordListSelector" disabled>
+        <label for="wordListSelector"></label><select id="wordListSelector" disabled>
           <option value="">-- בחר רשימת מילים --</option>
         </select>
       </div>
@@ -139,6 +121,11 @@
       <input type="number" id="displayWordCountInput" value="1" min="1" max="4" style=" width: 30px; margin-right: 5px;">
       <label for="displayWordCountInput">:מספר מילים </label>
     </div>
+    <div style="display: flex; margin-left: 36px; margin-top: 5px">
+      <input type="checkbox" id="showWord" checked style=" width: 30px; margin-right: 5px;">
+      <label for="showWord">: הצג מילה</label>
+    </div>
+    <span id="selectedWord" style="color: red"></span>
   </div>
 </div>
 

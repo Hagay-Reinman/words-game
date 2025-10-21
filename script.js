@@ -1,3 +1,6 @@
+// Add this line with other event listeners at the beginning of the script
+document.getElementById('showWord').addEventListener('change', toggleSelectedWord);
+
 // DEFAULT WORDS
 let allWords = ["בר", "בירה", "סיבה", "חלב", "מים", "לחם", "תפוח"];
 let targetWords = [];
@@ -14,6 +17,7 @@ let path = [], lastPointer=null;
 const canvas = document.getElementById("lineCanvas");
 const ctx = canvas.getContext("2d");
 const displayWords = 4;
+document.getElementById('showWord').value = true;
 
 // Size parameters (will be computed responsively)
 let circleSizePx = 500; // fallback
@@ -48,8 +52,10 @@ function pickRandomWords(words, maxCount = 4){
 function renderBoard(){
   const board=document.getElementById("board"); board.innerHTML="";
   const wordsToDisplay = getDisplayedWords();
-
+  const showWord = document.getElementById('showWord').value;
+  let selectedWord = '';
   wordsToDisplay.forEach((word,wi)=>{
+    selectedWord += word + '-';
     let rowHTML="";
     for(let ci=0; ci<word.length; ci++){
       const ch=word[ci];
@@ -58,6 +64,7 @@ function renderBoard(){
     }
     board.innerHTML+=`<div class="word-row">${rowHTML}</div>`;
   });
+  document.getElementById('selectedWord').textContent = selectedWord.slice(0, -1);
 }
 
 // Render letters
@@ -364,4 +371,16 @@ window.addEventListener('resize', () => {
   computeGeometry();
   renderLetters();
   drawPath();
+});
+
+// Add this new function to handle the checkbox change
+function toggleSelectedWord() {
+    const selectedWordElement = document.getElementById('selectedWord');
+    const showWordCheckbox = document.getElementById('showWord');
+    selectedWordElement.style.visibility = showWordCheckbox.checked ? 'visible' : 'hidden';
+}
+
+// Initialize the visibility state when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    toggleSelectedWord();
 });
