@@ -16,7 +16,7 @@ let path = [], lastPointer=null;
 
 const canvas = document.getElementById("lineCanvas");
 const ctx = canvas.getContext("2d");
-const displayWords = 4;
+const displayWords = 10;
 document.getElementById('showWord').value = true;
 
 // Size parameters (will be computed responsively)
