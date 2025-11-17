@@ -57,7 +57,11 @@ function renderBoard(){
   wordsToDisplay.forEach((word,wi)=>{
     selectedWord += word + '-';
     let rowHTML="";
-    for(let ci=0; ci<word.length; ci++){
+    let start_row = 0;
+    if(word.length > 4) {
+      start_row = word.length - 4
+    }
+    for(let ci=start_row; ci<word.length; ci++){
       const ch=word[ci];
       const show = foundWords.includes(word) || revealedLetters[wi][ci];
       rowHTML += `<span style="display:inline-block;width:28px">${show?ch:"_"}</span>`;
