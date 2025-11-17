@@ -94,7 +94,7 @@ function getDisplayedWords() {
   const maxDisplay = Math.min(displayWords, displayCount + foundWords.length);
   let start_row = 0;
   if (maxDisplay > 3) {
-    let start_row = maxDisplay - 3;
+    start_row = maxDisplay - 3;
   }
   return targetWords.slice(start_row, maxDisplay);
 }
