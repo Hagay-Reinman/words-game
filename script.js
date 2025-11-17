@@ -57,11 +57,7 @@ function renderBoard(){
   wordsToDisplay.forEach((word,wi)=>{
     selectedWord += word + '-';
     let rowHTML="";
-    let start_row = 0;
-    if(word.length > 4) {
-      start_row = word.length - 4
-    }
-    for(let ci=start_row; ci<word.length; ci++){
+    for(let ci=0; ci<word.length; ci++){
       const ch=word[ci];
       const show = foundWords.includes(word) || revealedLetters[wi][ci];
       rowHTML += `<span style="display:inline-block;width:28px">${show?ch:"_"}</span>`;
@@ -96,7 +92,11 @@ function renderLetters(){
 function getDisplayedWords() {
   const displayCount = parseInt(document.getElementById('displayWordCountInput').value) || 1;
   const maxDisplay = Math.min(displayWords, displayCount + foundWords.length);
-  return targetWords.slice(0, maxDisplay);
+  let start_row = 0;
+  if (maxDisplay > 3) {
+    let start_row = maxDisplay - 3;
+  }
+  return targetWords.slice(start_row, maxDisplay);
 }
 
 function updateLettersForDisplay() {
