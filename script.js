@@ -2,11 +2,12 @@
 document.getElementById('showWord').addEventListener('change', toggleSelectedWord);
 
 // DEFAULT WORDS
-let allWords = ["בר", "בירה", "סיבה", "חלב", "מים", "לחם", "תפוח"];
+let allWords = ["תכשיטנות","מקהלה","התעמלות","גאוגרפיה","אתגרים","בריכה","כלבנות","גינון","עברית","טבע"]
 let targetWords = [];
 let letters = [];
 
-let currentGuess="", foundWords=[];
+let currentGuess="";
+let foundWords=[];
 let revealedLetters = [];
 let parsedWordLists = {};
 let selectedWord = '';
@@ -52,19 +53,20 @@ function pickRandomWords(words, maxCount = 4){
 function renderBoard(){
   const board=document.getElementById("board"); board.innerHTML="";
   const wordsToDisplay = getDisplayedWords();
-  // const showWord = document.getElementById('showWord').value;
-  const current_words = selectedWord.split('-');
+  const current_words = selectedWord.split(' ');
   wordsToDisplay.forEach((word,wi)=>{
     if (current_words.indexOf(word) === -1) {
-      selectedWord += word + '-';
+      selectedWord += word + ' ';
     }
-    let rowHTML="";
-    for(let ci=0; ci<word.length; ci++){
-      const ch=word[ci];
-      const show = foundWords.includes(word) || revealedLetters[wi][ci];
-      rowHTML += `<span style="display:inline-block;width:28px">${show?ch:"_"}</span>`;
+    if (!foundWords.includes(word)) {
+      let rowHTML = "";
+      for (let ci = 0; ci < word.length; ci++) {
+        const ch = word[ci];
+        const show = foundWords.includes(word) || revealedLetters[wi][ci];
+        rowHTML += `<span style="display:inline-block;width:28px">${show ? ch : "_"}</span>`;
+      }
+      board.innerHTML += `<div class="word-row">${rowHTML}</div>`;
     }
-    board.innerHTML+=`<div class="word-row">${rowHTML}</div>`;
   });
   document.getElementById('selectedWord').textContent = selectedWord.slice(0, -1);
 }
@@ -94,11 +96,7 @@ function renderLetters(){
 function getDisplayedWords() {
   const displayCount = parseInt(document.getElementById('displayWordCountInput').value) || 1;
   const maxDisplay = Math.min(displayWords, displayCount + foundWords.length);
-  let start_row = 0;
-  if (maxDisplay > 3) {
-    start_row = maxDisplay - 3;
-  }
-  return targetWords.slice(start_row, maxDisplay);
+  return targetWords.slice(0, maxDisplay);
 }
 
 function updateLettersForDisplay() {
@@ -369,7 +367,7 @@ async function loadWordsFromDefaultFile() {
 
 loadWordsFromDefaultFile();
 
-window.deleteLetter = deleteLetter;
+// window.deleteLetter = deleteLetter;
 window.giveHint = giveHint;
 window.restartGame = restartGame;
 
