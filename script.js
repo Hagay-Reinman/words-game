@@ -9,7 +9,7 @@ let letters = [];
 let currentGuess="", foundWords=[];
 let revealedLetters = [];
 let parsedWordLists = {};
-
+let selectedWord = '';
 let dragging=false, usedButtons=new Set();
 const positions = new Map();
 let path = [], lastPointer=null;
@@ -52,10 +52,12 @@ function pickRandomWords(words, maxCount = 4){
 function renderBoard(){
   const board=document.getElementById("board"); board.innerHTML="";
   const wordsToDisplay = getDisplayedWords();
-  const showWord = document.getElementById('showWord').value;
-  let selectedWord = '';
+  // const showWord = document.getElementById('showWord').value;
+  const current_words = selectedWord.split('-');
   wordsToDisplay.forEach((word,wi)=>{
-    selectedWord += word + '-';
+    if (current_words.indexOf(word) === -1) {
+      selectedWord += word + '-';
+    }
     let rowHTML="";
     for(let ci=0; ci<word.length; ci++){
       const ch=word[ci];
@@ -191,6 +193,7 @@ function giveHint(){
 
 function restartGame(){ 
   targetWords = [...allWords];
+  selectedWord = '';
 
   // Select ALL words from the list, not just 4
   for (let i = targetWords.length - 1; i > 0; i--) {
@@ -207,8 +210,8 @@ function restartGame(){
 
 // Show/hide message
 function showMessageIfDone(){
-  if(foundWords.length===displayWords){
-    // targetWords.length){
+  const all_words = targetWords.length < displayWords ? targetWords.length: displayWords;
+  if(foundWords.length === all_words){
     messageEl.classList.add("show");
     setTimeout(()=>{ messageEl.classList.remove("show"); },10000);
   } else {
